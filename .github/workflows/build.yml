@@ -24,12 +24,15 @@ jobs:
 
       - name: Install Geode CLI
         run: |
-          $url = "https://github.com/geode-sdk/cli/releases/latest/download/geode-cli-windows.exe"
+          $rel = Invoke-RestMethod -Uri "https://api.github.com/repos/geode-sdk/cli/releases/latest"
+          $tag = $rel.tag_name
+          $asset = $rel.assets | Where-Object { $_.name -like "*-win.zip" } | Select-Object -First 1
+          Write-Host "Downloading Geode CLI $tag : $($asset.name)"
+          $zip = "$env:TEMP\geode-cli.zip"
+          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip
           $outDir = "$env:LOCALAPPDATA\geode-cli"
           New-Item -ItemType Directory -Path $outDir -Force | Out-Null
-          $outFile = "$outDir\geode.exe"
-          Write-Host "Downloading Geode CLI from $url"
-          Invoke-WebRequest -Uri $url -OutFile $outFile
+          Expand-Archive -Path $zip -DestinationPath $outDir -Force
           echo "$outDir" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           geode --version
 
