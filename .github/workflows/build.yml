@@ -1,0 +1,48 @@
+name: Build Mod
+
+on:
+  push:
+    branches: [master]
+    tags: ["v*"]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build (Windows)
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Geode SDK
+        uses: actions/cache@v4
+        with:
+          path: ~/.geode
+          key: geode-sdk-${{ runner.os }}
+
+      - name: Install Geode CLI
+        run: winget install --id GeodeSDK.GeodeCLI --accept-package-agreements --accept-source-agreements
+
+      - name: Install Geode SDK
+        run: |
+          geode sdk install
+          geode sdk install-binaries
+
+      - name: Configure
+        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        run: cmake --build build --config RelWithDebInfo
+
+      - name: Package
+        working-directory: build
+        run: geode package .
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: lock-music-arrow-windows
+          path: build/*.geode
+          if-no-files-found: error
