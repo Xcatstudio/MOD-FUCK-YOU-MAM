@@ -24,8 +24,8 @@ class $modify(MyUILayer, UILayer) {
 
     void findArrow(CCNode* node) {
         if (auto spr = typeinfo_cast<CCSprite*>(node)) {
-            if (auto frame = spr->getSpriteFrame()) {
-                auto name = std::string(frame->getName());
+            if (auto frame = spr->displayFrame()) {
+                auto name = frame->getFrameName();
                 if (name.find("musicArrow") != std::string::npos ||
                     name.find("musicBtn") != std::string::npos) {
                     g_musicArrow = spr;
