@@ -40,11 +40,13 @@ jobs:
           $gdDir = "$env:LOCALAPPDATA\GeometryDashCI"
           New-Item -ItemType Directory -Path $gdDir -Force | Out-Null
           geode profile add --name ci $gdDir
+          geode profile switch ci
 
       - name: Install Geode SDK
         run: |
           $sdkDir = "$env:LOCALAPPDATA\GeodeSDK"
           geode sdk install $sdkDir --force
+          geode config set sdk-path $sdkDir
           $env:GEODE_SDK = $sdkDir
           echo "GEODE_SDK=$sdkDir" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           geode sdk install-binaries
