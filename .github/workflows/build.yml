@@ -35,6 +35,12 @@ jobs:
           Expand-Archive -Path $zip -DestinationPath $outDir -Force
           echo "$outDir" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+      - name: Setup Geode profile
+        run: |
+          $gdDir = "$env:LOCALAPPDATA\GeometryDashCI"
+          New-Item -ItemType Directory -Path $gdDir -Force | Out-Null
+          geode profile add --name ci $gdDir
+
       - name: Install Geode SDK
         run: |
           geode sdk install
