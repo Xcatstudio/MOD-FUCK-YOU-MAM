@@ -23,7 +23,15 @@ jobs:
           key: geode-sdk-${{ runner.os }}
 
       - name: Install Geode CLI
-        run: winget install --id GeodeSDK.GeodeCLI --accept-package-agreements --accept-source-agreements
+        run: |
+          $url = "https://github.com/geode-sdk/cli/releases/latest/download/geode-cli-windows.exe"
+          $outDir = "$env:LOCALAPPDATA\geode-cli"
+          New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+          $outFile = "$outDir\geode.exe"
+          Write-Host "Downloading Geode CLI from $url"
+          Invoke-WebRequest -Uri $url -OutFile $outFile
+          echo "$outDir" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          geode --version
 
       - name: Install Geode SDK
         run: |
