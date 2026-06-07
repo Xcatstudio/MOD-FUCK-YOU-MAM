@@ -43,8 +43,8 @@ jobs:
 
       - name: Install Geode SDK
         run: |
-          geode sdk install
-          geode sdk install-binaries
+          echo "y" | geode sdk install
+          echo "y" | geode sdk install-binaries
 
       - name: Configure
         run: cmake -B build -G "Visual Studio 17 2022" -A x64
