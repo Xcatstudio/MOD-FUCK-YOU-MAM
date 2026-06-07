@@ -43,8 +43,11 @@ jobs:
 
       - name: Install Geode SDK
         run: |
-          echo "y" | geode sdk install
-          echo "y" | geode sdk install-binaries
+          $sdkDir = "$env:LOCALAPPDATA\GeodeSDK"
+          geode sdk install $sdkDir --force
+          $env:GEODE_SDK = $sdkDir
+          echo "GEODE_SDK=$sdkDir" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          geode sdk install-binaries
 
       - name: Configure
         run: cmake -B build -G "Visual Studio 17 2022" -A x64
