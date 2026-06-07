@@ -1,0 +1,33 @@
+{
+    "geode": "5.7.1",
+    "gd": {
+        "win": "2.2081",
+        "android": "2.2081",
+        "mac": "2.2081",
+        "ios": "2.2081"
+    },
+    "id": "vlad6200.lock-music-arrow",
+    "name": "Lock Music Arrow",
+    "version": "v1.0.0",
+    "developer": "vlad6200",
+    "description": "Блокує поворот музичної стрілки або задає фіксований кут",
+    "settings": {
+        "enabled": {
+            "name": "Увімкнено",
+            "description": "Вмикає/вимикає блокування стрілки",
+            "type": "bool",
+            "default": true
+        },
+        "angle": {
+            "name": "Кут стрілки",
+            "description": "Фіксований кут повороту стрілки (0–360)",
+            "type": "float",
+            "default": 0.0,
+            "min": 0.0,
+            "max": 360.0,
+            "control": {
+                "slider": true
+            }
+        }
+    }
+}

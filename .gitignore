@@ -1,0 +1,5 @@
+build/
+*.geode
+.vs/
+CMakeUserPresets.json
+CPM.cmake
